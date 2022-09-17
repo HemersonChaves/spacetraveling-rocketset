@@ -68,7 +68,15 @@ export default function Home(): JSX.Element {
             </Link>
           </div>
         </article>
-        <div>carregar mais posts</div>
+        <div>
+          <button
+            type="button"
+            // onClick={() => handleSubscribe()}
+            className={styles.maisButton}
+          >
+            carregar mais posts
+          </button>
+        </div>
       </main>
     </>
   );

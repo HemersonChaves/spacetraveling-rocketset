@@ -19,42 +19,57 @@
 .posts {
   max-width: 720px;
   margin: 4rem auto 2rem;
-  h2{
+  h2 {
     font-size: 2rem;
     font-weight: 600;
   }
   a {
-      display: block;
+    display: block;
 
-      & + a {
-          margin-top: 2rem;
-          padding-top: 2rem;
-          border-top: 1px solid var(--gray-700);
-          transition: color 0.2s;
-      }
+    & + a {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--gray-700);
+      transition: color 0.2s;
+    }
 
-      time {
-          font-size: 1rem;
-          display: flex;
-          align-items: center;
-          color: var(--gray-300);
-      }
+    time {
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      color: var(--gray-300);
+    }
 
-      p {
-          color: var(--gray-300);
-          margin-top: 0.5rem;
-          line-height: 1.625rem;
-      }
-      &:hover .meta {
-          color: var(--yellow-500);
-      }
+    p {
+      color: var(--gray-300);
+      margin-top: 0.5rem;
+      line-height: 1.625rem;
+    }
+    &:hover .meta {
+      color: var(--yellow-500);
+    }
   }
 }
-.meta{
+.meta {
   display: flex;
   margin-top: 1rem;
-  time{
+  time {
     margin-right: 2rem;
   }
 }
 
+.maisButton {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  color: var(--pink-500);
+  font-size: 1.25rem;
+  font-weight: bold;
+  transition: filter 0.2s;
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
