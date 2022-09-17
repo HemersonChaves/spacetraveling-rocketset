@@ -1,1 +1,17 @@
-// TODO
+.contentContainer{
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 15rem;
+}
+.hero{
+  max-width:600px;
+  h1 {
+    font-size: 2.5rem;
+    line-height: 4.5rem;
+    font-weight: 900;
+    margin: 2.5rem 0 4.5rem;
+    span{
+        color: var(--pink-500);
+    }
+}
+}
