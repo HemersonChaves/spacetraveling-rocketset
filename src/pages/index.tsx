@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import Image from 'next/image';
+import { FiCalendar, FiUser } from 'react-icons/fi';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
@@ -43,17 +43,32 @@ export default function Home(): JSX.Element {
           <div>
             <Link href="/">
               <a>
-                <h1>titulo post</h1>
+                <h2>Como utilizar Hooks</h2>
+                <div>Pensando em sincronização em vez de ciclos de vida. </div>
+                <div className={styles.meta}>
+                  <time>
+                    <FiCalendar /> 12/12/12
+                  </time>
+                  <span>
+                    <FiUser />
+                    person
+                  </span>
+                </div>
+              </a>
+            </Link>
+            <Link href="/">
+              <a>
+                <h2>titulo post</h2>
                 <div> post opijf opjf pojm </div>
-                <div>
+                <div className={styles.meta}>
                   <time>12/12/12</time>
                   <span>person</span>
                 </div>
-
               </a>
             </Link>
           </div>
         </article>
+        <div>carregar mais posts</div>
       </main>
     </>
   );
