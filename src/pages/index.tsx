@@ -34,10 +34,7 @@ export default function Home(): JSX.Element {
       </Head>
       <main className={styles.contentContainer}>
         <section className={styles.hero}>
-          <h1>
-            <img src="/images/logo.svg" alt="space travelin" /> spacetraveling
-            <span>.</span>
-          </h1>
+          <img src="/images/logo.svg" alt="space traveling" />
         </section>
         <article className={styles.posts}>
           <div>
@@ -82,9 +79,12 @@ export default function Home(): JSX.Element {
   );
 }
 
-// export const getStaticProps = async () => {
-//   // const prismic = getPrismicClient({});
-//   // const postsResponse = await prismic.getByType(TODO);
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient({});
 
-//   // TODO
-// };
+  const postsResponse = await prismic.getByType('posts', { pageSize: 2 });
+  console.log(postsResponse);
+  return {
+    props: { postsResponse },
+  };
+};
