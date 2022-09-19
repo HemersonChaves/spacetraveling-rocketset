@@ -27,8 +27,7 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
-  // console.log({ postsPagination });
-
+  const posts = postsPagination.results;
   return (
     <>
       <Head>
@@ -40,31 +39,23 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
         </section>
         <article className={styles.posts}>
           <div>
-            <Link href="/">
-              <a>
-                <h2>Como utilizar Hooks</h2>
-                <div>Pensando em sincronização em vez de ciclos de vida. </div>
-                <div className={styles.meta}>
-                  <time>
-                    <FiCalendar /> 12/12/12
-                  </time>
-                  <span>
-                    <FiUser />
-                    person
-                  </span>
-                </div>
-              </a>
-            </Link>
-            <Link href="/">
-              <a>
-                <h2>titulo post</h2>
-                <div> post opijf opjf pojm </div>
-                <div className={styles.meta}>
-                  <time>12/12/12</time>
-                  <span>person</span>
-                </div>
-              </a>
-            </Link>
+            {posts.map(post => (
+              <Link key={post.data.title} href={`/posts/${post.data.title}`}>
+                <a>
+                  <h2>{post.data.title}</h2>
+                  <div>{post.data.subtitle} </div>
+                  <div className={styles.meta}>
+                    <time>
+                      <FiCalendar /> 12/12/12
+                    </time>
+                    <span>
+                      <FiUser />
+                      {post.data.author}
+                    </span>
+                  </div>
+                </a>
+              </Link>
+            ))}
           </div>
         </article>
         <div>
@@ -88,17 +79,6 @@ export const getStaticProps: GetStaticProps = async () => {
   const postsPagination: PostPagination = {
     next_page: postsResponse.next_page,
     results: postsResponse.results,
-    //   results: [
-    //     {
-    //       uid: postsResponse.results[0].id,
-    //       first_publication_date: postsResponse.results[0].first_publication_date,
-    //       data: {
-    //         title: postsResponse.results[0].data.title,
-    //         subtitle: postsResponse.results[0].data.subtitle,
-    //         author: postsResponse.results[0].data.author,
-    //       },
-    //     },
-    //   ],
   };
   return {
     props: { postsPagination },
