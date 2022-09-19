@@ -2,8 +2,9 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FiCalendar, FiUser } from 'react-icons/fi';
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 import { getPrismicClient } from '../services/prismic';
-
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
@@ -27,7 +28,18 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
-  const posts = postsPagination.results;
+  const postsResponse = postsPagination.results;
+
+  const posts = postsResponse.map(post => ({
+    ...post,
+    first_publication_date: format(
+      new Date(post.first_publication_date),
+      'd MMM yyyy',
+      {
+        locale: ptBR,
+      }
+    ),
+  }));
   return (
     <>
       <Head>
@@ -46,10 +58,11 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
                   <div>{post.data.subtitle} </div>
                   <div className={styles.meta}>
                     <time>
-                      <FiCalendar /> 12/12/12
+                      <FiCalendar className={styles.icon} />
+                      {post.first_publication_date}
                     </time>
                     <span>
-                      <FiUser />
+                      <FiUser className={styles.icon} />
                       {post.data.author}
                     </span>
                   </div>
@@ -75,7 +88,13 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
 
-  const postsResponse = await prismic.getByType('posts', { pageSize: 20 });
+  const postsResponse = await prismic.getByType('posts', {
+    pageSize: 2,
+    orderings: {
+      field: 'last_publication_date',
+      direction: 'desc',
+    },
+  });
   const postsPagination: PostPagination = {
     next_page: postsResponse.next_page,
     results: postsResponse.results,
