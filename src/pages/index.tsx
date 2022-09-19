@@ -26,7 +26,9 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home(): JSX.Element {
+export default function Home({ postsPagination }: HomeProps): JSX.Element {
+  // console.log({ postsPagination });
+
   return (
     <>
       <Head>
@@ -82,9 +84,23 @@ export default function Home(): JSX.Element {
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
 
-  const postsResponse = await prismic.getByType('posts', { pageSize: 2 });
-  console.log(postsResponse);
+  const postsResponse = await prismic.getByType('posts', { pageSize: 20 });
+  const postsPagination: PostPagination = {
+    next_page: postsResponse.next_page,
+    results: postsResponse.results,
+    //   results: [
+    //     {
+    //       uid: postsResponse.results[0].id,
+    //       first_publication_date: postsResponse.results[0].first_publication_date,
+    //       data: {
+    //         title: postsResponse.results[0].data.title,
+    //         subtitle: postsResponse.results[0].data.subtitle,
+    //         author: postsResponse.results[0].data.author,
+    //       },
+    //     },
+    //   ],
+  };
   return {
-    props: { postsResponse },
+    props: { postsPagination },
   };
 };
