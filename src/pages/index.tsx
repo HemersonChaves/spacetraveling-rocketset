@@ -31,8 +31,6 @@ interface HomeProps {
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
   const postsResponse = postsPagination.results;
   const [nextPage, setNextPage] = useState(postsPagination.next_page);
-
-
   function formatePosts(postsResults: any): Post[] {
     const posts = postsResults.map(post => ({
       ...post,
@@ -73,7 +71,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
         <article className={styles.posts}>
           <div>
             {posts.map(post => (
-              <Link key={post.data.title} href={`/posts/${post.data.title}`}>
+              <Link key={post.uid} href={`/post/${post.uid}`}>
                 <a>
                   <h2>{post.data.title}</h2>
                   <div>{post.data.subtitle} </div>
