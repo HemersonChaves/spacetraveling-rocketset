@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import { useState } from 'react';
 import { getPrismicClient } from '../services/prismic';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
@@ -29,17 +30,37 @@ interface HomeProps {
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
   const postsResponse = postsPagination.results;
+  const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
-  const posts = postsResponse.map(post => ({
-    ...post,
-    first_publication_date: format(
-      new Date(post.first_publication_date),
-      'd MMM yyyy',
-      {
-        locale: ptBR,
-      }
-    ),
-  }));
+
+  function formatePosts(postsResults: any): Post[] {
+    const posts = postsResults.map(post => ({
+      ...post,
+      first_publication_date: format(
+        new Date(post.first_publication_date),
+        'd MMM yyyy',
+        {
+          locale: ptBR,
+        }
+      ),
+    }));
+    return posts;
+  }
+  const [posts, setPosts] = useState<Post[]>(formatePosts(postsResponse));
+
+  async function handleCarregarMais(): Promise<void> {
+    if (nextPage === null) return;
+
+    const novosPostsResponse = await fetch(nextPage).then(response =>
+      response.json()
+    );
+    if (novosPostsResponse) {
+      setNextPage(novosPostsResponse.next_page);
+    }
+    const novosPosts = formatePosts(novosPostsResponse.results);
+
+    setPosts([...posts, ...novosPosts]);
+  }
   return (
     <>
       <Head>
@@ -72,13 +93,15 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
           </div>
         </article>
         <div>
-          <button
-            type="button"
-            // onClick={() => handleSubscribe()}
-            className={styles.maisButton}
-          >
-            carregar mais posts
-          </button>
+          {nextPage && (
+            <button
+              type="button"
+              onClick={() => handleCarregarMais()}
+              className={styles.maisButton}
+            >
+              Carregar mais posts
+            </button>
+          )}
         </div>
       </main>
     </>
@@ -89,7 +112,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
 
   const postsResponse = await prismic.getByType('posts', {
-    pageSize: 2,
+    pageSize: 1,
     orderings: {
       field: 'last_publication_date',
       direction: 'desc',
