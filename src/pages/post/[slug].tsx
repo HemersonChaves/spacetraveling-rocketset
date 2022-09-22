@@ -58,12 +58,23 @@ export default function Post({ post }: PostProps): JSX.Element {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // const prismic = getPrismicClient({});
-  // const posts = await prismic.getByType(TODO);
-
+  const prismic = getPrismicClient({});
+  const posts = await prismic.getByType('posts', {
+    pageSize: 2,
+  });
+  let paths = [];
+  if (posts.results) {
+    paths = posts.results.map(post => {
+      return {
+        params: {
+          slug: post.uid,
+        },
+      };
+    });
+  }
   return {
-    paths: [], // indicates that no page needs be created at build time
-    fallback: 'blocking', // indicates the type of fallback
+    paths, // indicates that no page needs be created at build time
+    fallback: true, // indicates the type of fallback
   };
 };
 
