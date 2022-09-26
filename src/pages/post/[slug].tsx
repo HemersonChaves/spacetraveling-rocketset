@@ -7,6 +7,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { getPrismicClient } from '../../services/prismic';
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
+import Header from '../../components/Header';
 
 interface Post {
   first_publication_date: string | null;
@@ -46,7 +47,6 @@ export default function Post({ post }: PostProps): JSX.Element {
     ) / 200
   );
 
-  console.log(`total ${tempoEstimado}`);
   const router = useRouter();
   if (router.isFallback) {
     return <div>Carregando...</div>;
@@ -56,6 +56,7 @@ export default function Post({ post }: PostProps): JSX.Element {
       <Head>
         <title>{post.data.title} | Ignews</title>
       </Head>
+      <Header />
       <main className={styles.container}>
         <article className={styles.post}>
           <h1>{post.data.title}</h1>
